@@ -1,0 +1,48 @@
+.page {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  height: 100vh;
+  text-align: center;
+}
+
+.nav {
+  grid-column: span 1;
+  background-color: rgb(39 39 42);
+  height: 100vh;
+}
+
+.main {
+  grid-column: span 4;
+  background-color: rgb(24 24 27);
+  height: 100vh;
+}
+
+.container {
+  height: 35rem;
+}
+
+.question {
+  display: flex;
+  background-color: rgb(39 39 42);
+  width: 50%;
+  color: white;
+  margin: auto;
+  border-radius: 1rem;
+  border: 1px solid rgb(198, 198, 203);
+  padding-right: 1rem;
+}
+
+.typing,
+.ask {
+  background-color: rgb(39 39 42);
+  border: none;
+  border-radius: 1rem;
+  color: white;
+}
+
+.typing {
+  outline: none;
+  width: 90%;
+  height: 100%;
+  padding: 1.25rem;
+}

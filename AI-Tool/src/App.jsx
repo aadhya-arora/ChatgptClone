@@ -1,12 +1,18 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <></>;
+  return (
+    <div className="page">
+      <div className="nav"></div>
+      <div className="main">
+        <div className="container"></div>
+        <div className="question">
+          <input type="text" placeholder="Ask me anything" className="typing" />
+          <button className="ask">Ask</button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default App;
