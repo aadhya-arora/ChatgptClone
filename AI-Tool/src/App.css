@@ -65,5 +65,18 @@
 
 .main_text {
   text-align: left;
-  padding: 0.5rem;
+}
+
+.answer {
+  padding-top: 20px;
+  display: block;
+}
+
+.inner_text {
+  padding-left: 20px;
+  color: rgb(187, 187, 188);
+}
+
+.heading {
+  font-size: larger;
 }

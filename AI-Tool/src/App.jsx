@@ -29,7 +29,7 @@ function App() {
     let dataString = response.candidates[0].content.parts[0].text;
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
-    console.log(dataString);
+    //  console.log(dataString);
     setResult(dataString);
   };
   return (
@@ -44,8 +44,12 @@ function App() {
           <ul>
             {result &&
               result.map((item, index) => (
-                <li className="main_text">
-                  <Answers ans={item} key={index} />
+                <li className="main_text" key={index}>
+                  <Answers
+                    ans={item}
+                    totalResult={result.length}
+                    index={index}
+                  />
                 </li>
               ))}
           </ul>
