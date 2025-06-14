@@ -19,6 +19,7 @@
 
 .container {
   height: 35rem;
+  overflow: scroll;
 }
 
 .question {
@@ -60,4 +61,9 @@
   color: rgb(213, 213, 215);
   font-family: "DM Serif Text", serif;
   font-size: 1.5rem;
+}
+
+.main_text {
+  text-align: left;
+  padding: 0.5rem;
 }
