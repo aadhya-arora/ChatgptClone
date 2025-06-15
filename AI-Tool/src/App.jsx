@@ -4,7 +4,7 @@ import { URL } from "./constants";
 import Answers from "./components/Answers";
 function App() {
   const [question, setQuestion] = useState("");
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState([]);
   const payload = {
     contents: [
       {
@@ -30,8 +30,13 @@ function App() {
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
     //  console.log(dataString);
-    setResult(dataString);
+    setResult([
+      ...result,
+      { type: "q", text: question },
+      { type: "a", text: dataString },
+    ]);
   };
+  console.log(result);
   return (
     <div className="page">
       <div className="nav">
@@ -42,9 +47,28 @@ function App() {
       <div className="main">
         <div className="container">
           <ul>
+            {result.map((item, index) =>
+              item.type === "q" ? (
+                <li className="main_text" key={index + Math.random()}>
+                  <Answers ans={item.text} totalResult={1} index={index} />
+                </li>
+              ) : (
+                item.text.map((ansItem, ansIndex) => (
+                  <li className="main_text" key={ansIndex + Math.random()}>
+                    <Answers
+                      ans={ansItem}
+                      totalResult={item.length}
+                      index={ansIndex}
+                    />
+                  </li>
+                ))
+              )
+            )}
+          </ul>
+          {/* <ul>
             {result &&
               result.map((item, index) => (
-                <li className="main_text" key={index}>
+                <li className="main_text" key={index + Math.random()}>
                   <Answers
                     ans={item}
                     totalResult={result.length}
@@ -52,7 +76,7 @@ function App() {
                   />
                 </li>
               ))}
-          </ul>
+          </ul> */}
         </div>
         <div className="question">
           <input
