@@ -2,13 +2,20 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   height: 100vh;
-  text-align: center;
 }
 
 .nav {
   grid-column: span 1;
   background-color: rgb(39 39 42);
   height: 100vh;
+  cursor: pointer;
+}
+
+.history ul {
+  padding-left: 10px;
+  margin: 0;
+  list-style: none;
+  width: 100%;
 }
 
 .main {
@@ -57,16 +64,22 @@
   padding: 1.25rem;
 }
 
-.history {
-  color: rgb(213, 213, 215);
-  font-family: "DM Serif Text", serif;
-  font-size: 1.5rem;
-}
-
 .main_text {
   padding: 0.5rem;
   text-align: left;
   list-style-type: none;
+}
+
+.main_ques {
+  padding: 0.5rem;
+  text-align: right;
+  list-style-type: none;
+  border: 8px solid rgb(39 39 42);
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  width: fit-content;
+  background-color: rgb(39 39 42);
 }
 
 .answer {
@@ -75,10 +88,56 @@
 }
 
 .inner_text {
-  padding-left: 20px;
-  color: rgb(187, 187, 188);
+  padding-left: 10px;
+  color: rgb(193, 193, 195);
 }
 
 .heading {
   font-size: larger;
+}
+
+.ques {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.inner_ques {
+  padding-left: 5px;
+}
+
+.history-item {
+  list-style-type: none;
+  font-size: 15px;
+  text-align: left;
+  padding: 10px;
+  color: rgb(222, 222, 225);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 190px;
+  display: block;
+}
+
+.history-item:hover {
+  background-color: rgb(123, 121, 121);
+  color: rgb(249, 246, 246);
+}
+
+.search-heading {
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  padding: 15px;
+  gap: 7px;
+}
+
+.del {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  color: white;
+  cursor: pointer;
+  font-size: 19px;
 }

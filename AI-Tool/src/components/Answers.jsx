@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { checkHeading, replaceHeading } from "./helper";
 import "../app.css";
-const Answers = ({ ans, totalResult, index }) => {
+const Answers = ({ ans, totalResult, index, type }) => {
   const [heading, setHeading] = useState(false);
   const [replace, setReplace] = useState(ans);
   useEffect(() => {
@@ -19,7 +19,9 @@ const Answers = ({ ans, totalResult, index }) => {
       ) : heading ? (
         <span className="answer">{replace}</span>
       ) : (
-        <span className="inner_text">{replace}</span>
+        <span className={type == "q" ? "inner_ques" : "inner_text"}>
+          {replace}
+        </span>
       )}
     </>
   );
