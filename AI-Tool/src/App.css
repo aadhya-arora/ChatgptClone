@@ -24,11 +24,6 @@
   height: 100vh;
 }
 
-.container {
-  height: 35rem;
-  overflow: scroll;
-}
-
 .question {
   display: flex;
   background-color: rgb(39 39 42);
@@ -49,6 +44,8 @@
 }
 
 .container {
+  height: 32rem;
+  overflow: scroll;
   padding: 2rem;
   color: white;
 }
@@ -140,4 +137,105 @@
   color: white;
   cursor: pointer;
   font-size: 19px;
+}
+
+.loader {
+  border: 6px solid rgb(66, 66, 67); /* Light grey */
+  border-top: 6px solid #902390; /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.intro_heading {
+  font-size: 35px;
+  text-align: center;
+  background: linear-gradient(to right, pink, purple);
+  background-clip: text;
+  color: transparent;
+}
+
+.mode {
+  position: fixed;
+  color: rgb(0, 0, 0);
+  box-shadow: none;
+  background-color: transparent;
+  border: none;
+  bottom: 10px;
+}
+
+.light .del {
+  background-color: transparent;
+  color: black;
+}
+.light .search-heading {
+  display: flex;
+  padding: 25px;
+  gap: 10px;
+}
+
+.light .nav,
+.light .history-item,
+.light .search-heading {
+  color: black;
+  background-color: #f9eaea;
+}
+
+.light .container {
+  height: 32rem;
+}
+
+.light .main_ques {
+  padding: 0.5rem;
+  text-align: right;
+  list-style-type: none;
+  border: 2px solid rgb(39 39 42);
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  width: fit-content;
+}
+
+.light .main,
+.light .main_ques,
+.light .main_text,
+.light .inner_text,
+.light .container {
+  color: black;
+  background-color: rgb(252, 246, 233);
+}
+
+.light .question,
+.light .typing,
+.light .ask {
+  background-color: #fbc3c3;
+  color: black;
+}
+.light .typing::placeholder {
+  color: gray;
+}
+
+.light .history-item:hover {
+  background-color: #f4e5e5;
+  color: black;
+}
+.light .intro_heading {
+  background: linear-gradient(to right, pink, purple);
+  background-clip: text;
+  color: transparent;
 }

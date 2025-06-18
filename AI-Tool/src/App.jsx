@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { URL } from "./constants";
 import Answers from "./components/Answers";
@@ -7,16 +7,13 @@ function App() {
   const [question, setQuestion] = useState("");
   const [result, setResult] = useState([]);
   const [recentHistory, setRecentHistory] = useState([]);
-  const payload = {
-    contents: [
-      {
-        parts: [
-          {
-            text: question,
-          },
-        ],
-      },
-    ],
+  const [selectedHistory, setSelectedHistory] = useState("");
+  const scrollToAns = useRef();
+  const [loader, setLoader] = useState(false);
+  const [theme, setTheme] = useState("dark");
+
+  const handleThemeChange = (e) => {
+    setTheme(e.target.value);
   };
 
   useEffect(() => {
@@ -38,6 +35,23 @@ function App() {
   };
 
   const askQuestion = async () => {
+    const payloaddata = question ? question : selectedHistory;
+    const payload = {
+      contents: [
+        {
+          parts: [
+            {
+              text: payloaddata,
+            },
+          ],
+        },
+      ],
+    };
+
+    if (!question && !selectedHistory) {
+      return false;
+    }
+    setLoader(true);
     let response = await fetch(URL, {
       method: "POST",
       headers: {
@@ -53,10 +67,14 @@ function App() {
     //  console.log(dataString);
     setResult([
       ...result,
-      { type: "q", text: question },
+      { type: "q", text: question ? question : selectedHistory },
       { type: "a", text: dataString },
     ]);
-
+    setQuestion("");
+    setTimeout(() => {
+      scrollToAns.current.scrollTop = scrollToAns.current.scrollHeight;
+    }, 500);
+    setLoader(false);
     await fetch("http://localhost:5000/submit", {
       method: "POST",
       headers: {
@@ -65,9 +83,24 @@ function App() {
       body: JSON.stringify({ question, answer: dataString }),
     });
   };
-  console.log(result);
+  const isEnter = (event) => {
+    console.log(event.key);
+    if (event.key == "Enter") {
+      askQuestion();
+    }
+  };
+  useEffect(() => {
+    if (selectedHistory) {
+      setResult((prev) => [
+        ...prev,
+        { type: "q", text: selectedHistory.question },
+        { type: "a", text: selectedHistory.answer },
+      ]);
+    }
+  }, [selectedHistory]);
+
   return (
-    <div className="page">
+    <div className={`page ${theme}`}>
       <div className="nav">
         <div className="history">
           <div className="search-heading">
@@ -79,15 +112,30 @@ function App() {
 
           <ul>
             {recentHistory.map((item, index) => (
-              <li key={index} className="history-item">
+              <li
+                key={index}
+                className="history-item"
+                onClick={() => setSelectedHistory(item)}
+              >
                 {item.question}
               </li>
             ))}
           </ul>
         </div>
+        <select className="mode" onChange={handleThemeChange} value={theme}>
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
       </div>
       <div className="main">
-        <div className="container">
+        <h1 className="intro_heading">Hello User, Ask me anything!</h1>
+
+        <div ref={scrollToAns} className="container">
+          {loader ? (
+            <div className="loader-wrapper">
+              <div className="loader"></div>
+            </div>
+          ) : null}
           <ul>
             {result.map((item, index) => (
               <div
@@ -134,6 +182,7 @@ function App() {
         <div className="question">
           <input
             type="text"
+            onKeyDown={isEnter}
             value={question}
             onChange={(event) => setQuestion(event.target.value)}
             placeholder="Ask me anything"
