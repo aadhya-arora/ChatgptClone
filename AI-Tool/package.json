@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "cd src && npm install && npm run build && mv dist ../dist",
+    "start": "node backend/server.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
