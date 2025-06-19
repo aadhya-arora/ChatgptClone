@@ -20,7 +20,14 @@ function App() {
     const fetchHistory = async () => {
       const res = await fetch("http://localhost:5000/history");
       const data = await res.json();
-      setRecentHistory(data.reverse());
+      const uniqueMap = new Map();
+      data.reverse().forEach((item) => {
+        if (!uniqueMap.has(item.question)) {
+          uniqueMap.set(item.question, item);
+        }
+      });
+
+      setRecentHistory(Array.from(uniqueMap.values()));
     };
     fetchHistory();
   }, []);
@@ -31,6 +38,15 @@ function App() {
     });
     if (res.ok) {
       setRecentHistory([]); // Clear local history
+    }
+  };
+
+  const deleteSingleItem = async (id) => {
+    const res = await fetch(`http://localhost:5000/delete/${id}`, {
+      method: "DELETE",
+    });
+    if (res.ok) {
+      setRecentHistory((prev) => prev.filter((item) => item._id !== id));
     }
   };
 
@@ -62,7 +78,7 @@ function App() {
     response = await response.json();
 
     let dataString = response.candidates[0].content.parts[0].text;
-    dataString = dataString.split("* ");
+    dataString = dataString.split(/\n\* /);
     dataString = dataString.map((item) => item.trim());
     //  console.log(dataString);
     setResult([
@@ -82,6 +98,15 @@ function App() {
       },
       body: JSON.stringify({ question, answer: dataString }),
     });
+    const res = await fetch("http://localhost:5000/history");
+    const data = await res.json();
+    const uniqueMap = new Map();
+    data.reverse().forEach((item) => {
+      if (!uniqueMap.has(item.question)) {
+        uniqueMap.set(item.question, item);
+      }
+    });
+    setRecentHistory(Array.from(uniqueMap.values()));
   };
   const isEnter = (event) => {
     console.log(event.key);
@@ -109,18 +134,25 @@ function App() {
               <FiTrash />
             </button>
           </div>
-
-          <ul>
-            {recentHistory.map((item, index) => (
-              <li
-                key={index}
-                className="history-item"
-                onClick={() => setSelectedHistory(item)}
-              >
-                {item.question}
-              </li>
-            ))}
-          </ul>
+          <div className="his_con">
+            <ul>
+              {recentHistory.map((item, index) => (
+                <li key={index} className="history-item">
+                  <span onClick={() => setSelectedHistory(item)}>
+                    {item.question}
+                  </span>
+                  <FiTrash
+                    className="item-trash"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log("Clicked trash for ID:", item._id); // ✅ Debug log
+                      deleteSingleItem(item._id);
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <select className="mode" onChange={handleThemeChange} value={theme}>
           <option value="dark">Dark</option>

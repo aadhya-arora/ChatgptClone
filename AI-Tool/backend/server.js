@@ -32,10 +32,24 @@ app.get("/history", async (req, res) => {
 
 app.post("/submit", async (req, res) => {
   const { question, answer } = req.body;
-  const newChat = new chat({ question, answer });
-  await newChat.save();
+  const existing = await chat.findOne({ question });
+
+  if (!existing) {
+    const newChat = new chat({ question, answer });
+    await newChat.save();
+    return res.status(201).json({ message: "Saved successfully" });
+  } else {
+    return res.status(200).json({ message: "Duplicate found, not saved" });
+  }
 });
 
 app.delete("/delete-all", async (req, res) => {
   await chat.deleteMany({});
+});
+
+app.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log("Id recieved", id);
+  await chat.findByIdAndDelete(id);
+  res.status(200).json({ message: "Deleted successfully" });
 });
