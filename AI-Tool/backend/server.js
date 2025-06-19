@@ -1,13 +1,24 @@
 import express from "express";
 import mongoose from "mongoose";
+import path from "path";
+import dotenv from "dotenv";
 
 import cors from "cors";
 import chat from "./schema.js";
+
+dotenv.config();
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const MONGO_URI = "mongodb://127.0.0.1:27017/ChatgptClone";
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+});
+
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
   .connect(MONGO_URI, {
@@ -16,8 +27,9 @@ mongoose
   })
   .then(() => {
     console.log("✅ Connected to MongoDB");
+    const PORT = process.env.PORT || 5000;
 
-    app.listen(5000, () => {
+    app.listen(PORT, () => {
       console.log("🚀 Server is running on port 5000");
     });
   })
@@ -45,6 +57,7 @@ app.post("/submit", async (req, res) => {
 
 app.delete("/delete-all", async (req, res) => {
   await chat.deleteMany({});
+  res.status(200).json({ message: "All chats deleted" });
 });
 
 app.delete("/delete/:id", async (req, res) => {
