@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./Front.css";
 import { URL } from "./constants";
-import Answers from "./Answers";
+import Answers from "../components/Answers";
 import { FiTrash } from "react-icons/fi";
 
 function Front() {
@@ -9,6 +9,7 @@ function Front() {
   const [result, setResult] = useState([]);
   const [recentHistory, setRecentHistory] = useState([]);
   const [selectedHistory, setSelectedHistory] = useState("");
+  const [user, setUser] = useState(null);
   const scrollToAns = useRef();
   const [loader, setLoader] = useState(false);
   const [theme, setTheme] = useState("dark");
@@ -18,73 +19,63 @@ function Front() {
   };
 
   useEffect(() => {
-    const fetchHistory = async () => {
-      const res = await fetch("http://localhost:5000/history");
-      const data = await res.json();
-      const uniqueMap = new Map();
-      data.reverse().forEach((item) => {
-        if (!uniqueMap.has(item.question)) {
-          uniqueMap.set(item.question, item);
-        }
-      });
+    fetch("http://localhost:5000/me", { credentials: "include" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) throw new Error();
+        setUser(data);
+      })
+      .catch(() => (window.location.href = "/"));
+  }, []);
 
-      setRecentHistory(Array.from(uniqueMap.values()));
-    };
-    fetchHistory();
+  useEffect(() => {
+    // Fetch history
+    fetch("http://localhost:5000/history", { credentials: "include" })
+      .then((res) => res.json())
+      .then((data) => {
+        const uniqueMap = new Map();
+        data.reverse().forEach((item) => {
+          if (!uniqueMap.has(item.question)) {
+            uniqueMap.set(item.question, item);
+          }
+        });
+        setRecentHistory(Array.from(uniqueMap.values()));
+      });
   }, []);
 
   const handleDeleteAll = async () => {
-    const res = await fetch("http://localhost:5000/delete-all", {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setRecentHistory([]);
-    }
+    await fetch("http://localhost:5000/delete-all", { method: "DELETE" });
+    setRecentHistory([]);
   };
 
   const deleteSingleItem = async (id) => {
-    const res = await fetch(`http://localhost:5000/delete/${id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setRecentHistory((prev) => prev.filter((item) => item._id !== id));
-    }
+    await fetch(`http://localhost:5000/delete/${id}`, { method: "DELETE" });
+    setRecentHistory((prev) => prev.filter((item) => item._id !== id));
   };
 
   const askQuestion = async () => {
-    const payloaddata = question ? question : selectedHistory;
-    const payload = {
-      contents: [
-        {
-          parts: [
-            {
-              text: payloaddata,
-            },
-          ],
-        },
-      ],
-    };
+    const payloaddata = question || selectedHistory?.question;
+    if (!payloaddata) return;
 
-    if (!question && !selectedHistory) {
-      return false;
-    }
+    const payload = {
+      contents: [{ parts: [{ text: payloaddata }] }],
+    };
 
     setLoader(true);
     let response = await fetch(URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+
     response = await response.json();
+    let dataString = response.candidates[0].content.parts[0].text
+      .split(/\n\* /)
+      .map((item) => item.trim());
 
-    let dataString = response.candidates[0].content.parts[0].text;
-    dataString = dataString.split(/\n\* /).map((item) => item.trim());
-
-    setResult([
-      ...result,
-      { type: "q", text: question ? question : selectedHistory },
+    setResult((prev) => [
+      ...prev,
+      { type: "q", text: payloaddata },
       { type: "a", text: dataString },
     ]);
     setQuestion("");
@@ -92,21 +83,21 @@ function Front() {
     setTimeout(() => {
       scrollToAns.current.scrollTop = scrollToAns.current.scrollHeight;
     }, 500);
-
     setLoader(false);
 
     await fetch("http://localhost:5000/submit", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ question, answer: dataString }),
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ question: payloaddata, answer: dataString }),
     });
 
-    const res = await fetch("http://localhost:5000/history");
-    const data = await res.json();
+    const res = await fetch("http://localhost:5000/history", {
+      credentials: "include",
+    });
+    const newHistory = await res.json();
     const uniqueMap = new Map();
-    data.reverse().forEach((item) => {
+    newHistory.reverse().forEach((item) => {
       if (!uniqueMap.has(item.question)) {
         uniqueMap.set(item.question, item);
       }
@@ -115,9 +106,7 @@ function Front() {
   };
 
   const isEnter = (event) => {
-    if (event.key === "Enter") {
-      askQuestion();
-    }
+    if (event.key === "Enter") askQuestion();
   };
 
   useEffect(() => {
@@ -166,7 +155,9 @@ function Front() {
       </div>
 
       <div className="main">
-        <h1 className="intro_heading">Hello User, Ask me anything!</h1>
+        <h1 className="intro_heading">
+          Hello {user?.username || "User"}, Ask me anything!
+        </h1>
 
         <div ref={scrollToAns} className="container">
           {loader && (
@@ -181,7 +172,7 @@ function Front() {
                 key={index + Math.random()}
               >
                 {item.type === "q" ? (
-                  <li className="main_ques" key={index + Math.random()}>
+                  <li className="main_ques">
                     <Answers
                       ans={item.text}
                       totalResult={1}
