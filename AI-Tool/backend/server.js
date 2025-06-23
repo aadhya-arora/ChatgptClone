@@ -1,11 +1,5 @@
 import express from "express";
 import mongoose from "mongoose";
-<<<<<<< HEAD
-=======
-import path from "path";
-import dotenv from "dotenv";
-
->>>>>>> b4316bd4ce5f211375b9af2646b254e52841b1c1
 import cors from "cors";
 import chat from "./schema.js";
 
