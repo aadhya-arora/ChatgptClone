@@ -16,8 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      "https://chatgpt-clone-2qdar1gpl-aadhya-aroras-projects.vercel.app",
+      "http://localhost:5173", // for local testing
+      "https://chatgpt-clone-five-sigma.vercel.app",
+      "https://chatgpt-clone-git-main-aadhya-aroras-projects.vercel.app",
+      "https://chatgpt-clone-imqzx2ph5-aadhya-aroras-projects.vercel.app",
     ],
     credentials: true,
   })
