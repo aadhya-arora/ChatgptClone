@@ -6,7 +6,7 @@
   align-items: center;
   min-height: 100vh;
   font-family: "Jost", sans-serif;
-  background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+  background: linear-gradient(to bottom, rgb(39 39 42), #1b192f, #26262e);
 }
 
 .main2 {
@@ -60,7 +60,7 @@ label {
   justify-content: center;
   display: block;
   color: #fff;
-  background: #573b8a;
+  background: #3f2e5e;
   font-size: 1em;
   font-weight: bold;
   margin-top: 30px;

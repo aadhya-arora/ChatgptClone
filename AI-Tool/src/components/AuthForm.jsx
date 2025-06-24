@@ -76,7 +76,6 @@ const AuthForm = () => {
     <div className="body">
       <div className="main2">
         <input type="checkbox" id="chk" aria-hidden="true" />
-        {/* Signup Form */}
         <div className="signup">
           <form onSubmit={handleSignupSubmit}>
             <label htmlFor="chk" aria-hidden="true">
@@ -128,7 +127,6 @@ const AuthForm = () => {
           </form>
         </div>
 
-        {/* Login Form */}
         <div className="login">
           <form onSubmit={handleLoginSubmit}>
             <label htmlFor="chk" aria-hidden="true">
