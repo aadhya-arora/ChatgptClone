@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://chatgpt-clone-puce-zeta.vercel.app",
+      "https://chatgpt-clone-five-sigma.vercel.app",
     ],
     credentials: true,
   })
