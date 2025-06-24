@@ -19,7 +19,7 @@ app.use(
       "http://localhost:5173", // for local testing
       "https://chatgpt-clone-five-sigma.vercel.app",
       "https://chatgpt-clone-git-main-aadhya-aroras-projects.vercel.app",
-      "https://chatgpt-clone-imqzx2ph5-aadhya-aroras-projects.vercel.app",
+      "https://chatgpt-clone-gc33x4dti-aadhya-aroras-projects.vercel.app",
     ],
     credentials: true,
   })
