@@ -43,7 +43,6 @@ const Answers = ({ ans, totalResult, index, type }) => {
         <span className="answer">{replace}</span>
       ) : (
         <span className={type == "q" ? "inner_ques" : "inner_text"}>
-          {/* {replace} */}
           <ReactMarkdown components={renderer}>{replace}</ReactMarkdown>
         </span>
       )}

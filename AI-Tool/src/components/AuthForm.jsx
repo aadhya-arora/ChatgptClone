@@ -25,13 +25,16 @@ const AuthForm = () => {
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(signupData),
-      });
+      const res = await fetch(
+        "https://chatgpt-backend-no4u.onrender.com/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(signupData),
+        }
+      );
       const data = await res.json();
 
       if (res.ok) {
@@ -49,14 +52,17 @@ const AuthForm = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // To send cookie
-        body: JSON.stringify(loginData),
-      });
+      const res = await fetch(
+        "https://chatgpt-backend-no4u.onrender.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // To send cookie
+          body: JSON.stringify(loginData),
+        }
+      );
 
       const text = await res.text();
 

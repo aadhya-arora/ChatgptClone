@@ -19,7 +19,9 @@ function Front() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/me", { credentials: "include" })
+    fetch("https://chatgpt-backend-no4u.onrender.com/me", {
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.error) throw new Error();
@@ -29,8 +31,9 @@ function Front() {
   }, []);
 
   useEffect(() => {
-    // Fetch history
-    fetch("http://localhost:5000/history", { credentials: "include" })
+    fetch("https://chatgpt-backend-no4u.onrender.com/history", {
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((data) => {
         const uniqueMap = new Map();
@@ -44,12 +47,16 @@ function Front() {
   }, []);
 
   const handleDeleteAll = async () => {
-    await fetch("http://localhost:5000/delete-all", { method: "DELETE" });
+    await fetch("https://chatgpt-backend-no4u.onrender.com/delete-all", {
+      method: "DELETE",
+    });
     setRecentHistory([]);
   };
 
   const deleteSingleItem = async (id) => {
-    await fetch(`http://localhost:5000/delete/${id}`, { method: "DELETE" });
+    await fetch(`https://chatgpt-backend-no4u.onrender.com/delete/${id}`, {
+      method: "DELETE",
+    });
     setRecentHistory((prev) => prev.filter((item) => item._id !== id));
   };
 
@@ -85,16 +92,19 @@ function Front() {
     }, 500);
     setLoader(false);
 
-    await fetch("http://localhost:5000/submit", {
+    await fetch("https://chatgpt-backend-no4u.onrender.com/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ question: payloaddata, answer: dataString }),
     });
 
-    const res = await fetch("http://localhost:5000/history", {
-      credentials: "include",
-    });
+    const res = await fetch(
+      "https://chatgpt-backend-no4u.onrender.com/history",
+      {
+        credentials: "include",
+      }
+    );
     const newHistory = await res.json();
     const uniqueMap = new Map();
     newHistory.reverse().forEach((item) => {
