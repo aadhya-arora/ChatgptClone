@@ -253,3 +253,25 @@
   background-clip: text;
   color: transparent;
 }
+
+.container::-webkit-scrollbar,
+.his_con::-webkit-scrollbar {
+  width: 6px;
+}
+
+.container::-webkit-scrollbar-track,
+.his_con::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.container::-webkit-scrollbar-thumb,
+.his_con::-webkit-scrollbar-thumb {
+  background-color: rgb(66, 66, 67);
+  border-radius: 10px;
+}
+
+.container,
+.his_con {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(53, 53, 53) transparent;
+}
