@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://chatgpt-clone-five-sigma.vercel.app",
+      "https://chatgpt-clone-c5gro5rdo-aadhya-aroras-projects.vercel.app",
     ],
     credentials: true,
   })
@@ -105,7 +105,11 @@ app.post("/create", (req, res) => {
         });
 
         const token = jwt.sign({ email, username }, process.env.SECURITY);
-        res.cookie("token", token, { httpOnly: true, sameSite: "Lax" });
+        res.cookie("token", token, {
+          httpOnly: true,
+          sameSite: "None",
+          secure: true,
+        });
 
         console.log("✅ User created:", createUser);
         res.status(201).json(createUser);
@@ -136,7 +140,11 @@ app.post("/login", async (req, res) => {
         { email: user.email, username: user.username },
         process.env.SECURITY
       );
-      res.cookie("token", token, { httpOnly: true, sameSite: "Lax" });
+      res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+      });
       res.status(200).json({ message: "Login success" });
     } else {
       res.status(401).json({ error: "Incorrect password" });
