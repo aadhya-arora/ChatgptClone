@@ -52,11 +52,6 @@ AI-Tool/
 - Start chatting with the AI!
 - View your chat history and delete conversations as needed.
 
-## License
 
-[MIT](LICENSE)
 
----
 
-**Contact:**  
-For questions or feedback, please open an issue or contact [your-email@example.com].
